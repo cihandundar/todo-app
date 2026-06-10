@@ -6,10 +6,10 @@ export async function PUT(
     { params }: { params: Promise<{ id: string }> }
 ) {
     const { id } = await params;
-    const { completed } = await req.json();
+    const { completed, title } = await req.json();
     const todo = await prisma.todo.update({
         where: { id },
-        data: { completed },
+        data: { ...(completed !== undefined && { completed }), ...(title && { title }) },
     });
     return NextResponse.json(todo);
 }
