@@ -11,7 +11,7 @@ interface TodoStore {
     todos: Todo[];
     setTodos: (todos: Todo[]) => void;
     addTodo: (todo: Todo) => void;
-    updateTodo: (id: string, completed: boolean) => void;
+    updateTodo: (id: string, completed: boolean, title?: string) => void;
     deleteTodo: (id: string) => void;
 }
 
@@ -19,10 +19,10 @@ export const useTodoStore = create<TodoStore>((set) => ({
     todos: [],
     setTodos: (todos) => set({ todos }),
     addTodo: (todo) => set((state) => ({ todos: [todo, ...state.todos] })),
-    updateTodo: (id, completed) =>
+    updateTodo: (id, completed, title) =>
         set((state) => ({
             todos: state.todos.map((t) =>
-                t.id === id ? { ...t, completed } : t
+                t.id === id ? { ...t, completed, ...(title && { title }) } : t
             ),
         })),
     deleteTodo: (id) =>
