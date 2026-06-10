@@ -9,12 +9,19 @@ export default function Home() {
   const [title, setTitle] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingTitle, setEditingTitle] = useState("");
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
+    useTodoStore.persist.rehydrate();
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated) return;
     fetch("/api/todos")
       .then((res) => res.json())
       .then(setTodos);
-  }, []);
+  }, [hydrated]);
 
   const handleAdd = async () => {
     if (!title.trim()) return;
@@ -61,6 +68,10 @@ export default function Home() {
     setEditingId(null);
     toast.success("Güncellendi!");
   };
+
+  if (!hydrated) {
+    return null; // hydration öncesi render'ı engelle
+  }
 
   const completed = todos.filter((t) => t.completed).length;
   const progress = todos.length > 0 ? (completed / todos.length) * 100 : 0;
