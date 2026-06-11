@@ -183,7 +183,7 @@ export default function Home() {
                     </span>
                   </div>
 
-                  <div className="flex gap-3 ml-3 opacity-0 group-hover:opacity-100 transition shrink-0">
+                  <div className="flex gap-3 ml-3 transition shrink-0">
                     <button
                       onClick={() => handleEditStart(todo.id, todo.title)}
                       className="text-gray-500 hover:text-violet-400 text-sm transition"
